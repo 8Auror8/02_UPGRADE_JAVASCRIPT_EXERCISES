@@ -1,0 +1,53 @@
+<!-- En base al ejercicio anterior. Crea dinamicamente un elemento <p> por cada petición a la api que diga...'
+El nombre X tiene un Y porciento de ser de Z' etc etc.
+
+EJ: El nombre Abel tiene un 22 porciento de ser de ET y un 6 porciento de ser de MZ. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="inputText">
+    <button id="consultButton">Consultar</button>
+    <div class="container"></div>
+    <script>
+
+        const contenedor = document.querySelector('.container');
+        const buscarNombre = (data) =>{
+            console.log('estamos dentro de buscarNombre');
+            const nombre = data.name;
+            for(let i=0; i < data.country.length; i++){
+                /* const parrafo = `El nombre ${nombre} tiene un ${data.country[i].probability} porciento de ser de ${data.country[i].country}`; */
+                const html = `<p>${nombre}</p><p>${data.country[i].probability}</p>`
+                contenedor.innerHTML = html;
+            }
+        }
+
+
+        const inputValue = document.getElementById('inputText').value;
+        const button = document.getElementById('consultButton').addEventListener('click',() => llamadaApi (inputValue));
+
+        const llamadaApi = async () => {
+            try {
+                const response = await fetch(`https://api.nationalize.io?name=${inputValue}`);
+                const data = await response.json();
+                console.log(data);
+                buscarNombre(data);
+            } catch (error) {
+                console.error('Error en la solicitud fetch:', error);
+            }
+        };
+
+    </script>
+</body>
+</html>
+
+<!-- ```js
+const baseUrl = 'https://api.nationalize.io?name=';
+``` -->
+
+
